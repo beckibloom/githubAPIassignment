@@ -23,9 +23,9 @@ function displayResults(responseJson, query) {
         responseJson[i].description = 'No description provided for this repository.';
     }
     $('#results-list').append(
-      `<li><h3><a href="${responseJson[i].html_url}">${responseJson[i].name}</a></h3>
+      `<li><h3>Repository name: <a href="${responseJson[i].html_url}">${responseJson[i].name}</a></h3>
       <p class="last-updated">Last updated ${responseJson[i].updated_at}</p>
-      <p>${responseJson[i].description}</p>
+      <p>Description: ${responseJson[i].description}</p>
       </li>`
     )};
     $('.js-search-term').html(query);
