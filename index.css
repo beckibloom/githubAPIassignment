@@ -42,5 +42,9 @@
   }
 
   .js-search-term {
-      color: darkblue;
+      color: blue;
+  }
+
+  .last-updated {
+      font-style:italic;
   }

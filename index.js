@@ -9,55 +9,46 @@ function formatQueryParams(params) {
   return queryItems.join('&');
 }
 
-function displayResults(responseJson, maxResults) {
+function displayResults(responseJson, query) {
   // if there are previous results, remove them
   console.log(responseJson);
   $('#results-list').empty();
   // iterate through the articles array, stopping at the max number of results
-  for (let i = 0; i < responseJson.articles.length & i<maxResults ; i++){
+  for (let i = 0; i < responseJson.length; i++){
     // for each video object in the articles
     //array, add a list item to the results 
     //list with the article title, source, author,
     //description, and image
+    if (responseJson[i].description === null) {
+        responseJson[i].description = 'No description provided for this repository.';
+    }
     $('#results-list').append(
-      `<li><h3><a href="${responseJson.articles[i].url}">${responseJson.articles[i].title}</a></h3>
-      <p>${responseJson.articles[i].source.name}</p>
-      <p>By ${responseJson.articles[i].author}</p>
-      <p>${responseJson.articles[i].description}</p>
-      <img src='${responseJson.articles[i].urlToImage}'>
+      `<li><h3><a href="${responseJson[i].html_url}">${responseJson[i].name}</a></h3>
+      <p class="last-updated">Last updated ${responseJson[i].updated_at}</p>
+      <p>${responseJson[i].description}</p>
       </li>`
     )};
+    $('.js-search-term').html(query);
   //display the results section  
   $('#results').removeClass('hidden');
 };
 
 function getRepos(query) {
     console.log(`getRepos ran with query: ${query}`);
-//   const params = {
-//     q: query,
-//     language: "en",
-//   };
-//   const queryString = formatQueryParams(params)
-//   const url = searchURL + '?' + queryString;
+    const url = searchURL + query + '/repos?sort=updated';
+    console.log(url);
 
-//   console.log(url);
-
-//   const options = {
-//     headers: new Headers({
-//       "X-Api-Key": apiKey})
-//   };
-
-//   fetch(url, options)
-//     .then(response => {
-//       if (response.ok) {
-//         return response.json();
-//       }
-//       throw new Error(response.statusText);
-//     })
-//     .then(responseJson => displayResults(responseJson, maxResults))
-//     .catch(err => {
-//       $('#js-error-message').text(`Something went wrong: ${err.message}`);
-//     });
+    fetch(url)
+        .then(response => {
+        if (response.ok) {
+            return response.json();
+        }
+        throw new Error(response.statusText);
+        })
+        .then(responseJson => displayResults(responseJson, query))
+        .catch(err => {
+        $('#js-error-message').text(`Something went wrong: ${err.message}`);
+        });
 }
 
 function watchForm() {
