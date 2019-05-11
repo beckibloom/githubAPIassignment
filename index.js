@@ -1,8 +1,6 @@
 'use strict';
 
-const apiKey = "dae8c5479fb64c638271b92bb14eaf88"
-
-const searchURL = 'https://newsapi.org/v2/everything';
+const searchURL = 'https://api.github.com/users/';
 
 
 function formatQueryParams(params) {
@@ -33,40 +31,40 @@ function displayResults(responseJson, maxResults) {
   $('#results').removeClass('hidden');
 };
 
-function getNews(query, maxResults=10) {
-  const params = {
-    q: query,
-    language: "en",
-  };
-  const queryString = formatQueryParams(params)
-  const url = searchURL + '?' + queryString;
+function getRepos(query) {
+    console.log(`getRepos ran with query: ${query}`);
+//   const params = {
+//     q: query,
+//     language: "en",
+//   };
+//   const queryString = formatQueryParams(params)
+//   const url = searchURL + '?' + queryString;
 
-  console.log(url);
+//   console.log(url);
 
-  const options = {
-    headers: new Headers({
-      "X-Api-Key": apiKey})
-  };
+//   const options = {
+//     headers: new Headers({
+//       "X-Api-Key": apiKey})
+//   };
 
-  fetch(url, options)
-    .then(response => {
-      if (response.ok) {
-        return response.json();
-      }
-      throw new Error(response.statusText);
-    })
-    .then(responseJson => displayResults(responseJson, maxResults))
-    .catch(err => {
-      $('#js-error-message').text(`Something went wrong: ${err.message}`);
-    });
+//   fetch(url, options)
+//     .then(response => {
+//       if (response.ok) {
+//         return response.json();
+//       }
+//       throw new Error(response.statusText);
+//     })
+//     .then(responseJson => displayResults(responseJson, maxResults))
+//     .catch(err => {
+//       $('#js-error-message').text(`Something went wrong: ${err.message}`);
+//     });
 }
 
 function watchForm() {
   $('form').submit(event => {
     event.preventDefault();
     const searchTerm = $('#js-search-term').val();
-    const maxResults = $('#js-max-results').val();
-    getNews(searchTerm, maxResults);
+    getRepos(searchTerm);
   });
 }
 
