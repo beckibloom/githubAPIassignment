@@ -14,6 +14,9 @@ function displayResults(responseJson, query) {
   console.log(responseJson);
   $('#results-list').empty();
   // iterate through the articles array, stopping at the max number of results
+  if (responseJson.length === 0) {
+    $('#results-list').html(`<li class="error-message">Something went wrong: This user has no repositories.</li>`);
+  }
   for (let i = 0; i < responseJson.length; i++){
     // for each video object in the articles
     //array, add a list item to the results 
@@ -47,7 +50,7 @@ function getRepos(query) {
         })
         .then(responseJson => displayResults(responseJson, query))
         .catch(err => {
-        $('#js-error-message').text(`Something went wrong: ${err.message}`);
+            alert(`${err.message}`);
         });
 }
 
@@ -56,6 +59,7 @@ function watchForm() {
     event.preventDefault();
     const searchTerm = $('#js-search-term').val();
     getRepos(searchTerm);
+    $('#js-search-term').val("");
   });
 }
 
